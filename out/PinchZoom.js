@@ -14,11 +14,11 @@ var _lodash = require('lodash');
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _photoswipe = require('../lib/photoswipe.js');
+var _photoswipe = require('./lib/photoswipe.js');
 
 var _photoswipe2 = _interopRequireDefault(_photoswipe);
 
-var _photoswipeUiDefault = require('../lib/photoswipe-ui-default.js');
+var _photoswipeUiDefault = require('./lib/photoswipe-ui-default.js');
 
 var _photoswipeUiDefault2 = _interopRequireDefault(_photoswipeUiDefault);
 
