@@ -1,151 +1,153 @@
-import React, {PropTypes, Component} from 'react';
-import ZVUIPinch from '../lib/photoswipe.js';
-import ZVUIPinch_Default from '../lib/photoswipe-ui-default.js';
-import classnames from 'classnames';
-import events from './events';
-import camelCase from 'camelcase';
-import '../lib/main.css';
+import './lib/main.css'
+import './style.css'
 
-const BASE_CLASS = 'zvui-pinch';
+import _ from 'lodash'
+import PhotoSwipe from './lib/photoswipe.js'
+import PhotoSwipeUIDefault from './lib/photoswipe-ui-default.js'
+import React from 'react'
 
-class PinchZoom extends Component {
-    static propTypes = {
-        isOpen: PropTypes.bool.isRequired,
-        items: PropTypes.array.isRequired,
-        options: PropTypes.object,
-        onClose: PropTypes.func,
-        id: PropTypes.string,
-        className: PropTypes.string,
-    };
+export default class PinchZoom extends React.Component {
+  static propTypes = {
+    items: React.PropTypes.arrayOf(React.PropTypes.shape({
+      src: React.PropTypes.string,
+      w: React.PropTypes.number,
+      h: React.PropTypes.number,
+    })).isRequired,
+    selectedIndex: React.PropTypes.number.isRequired,
+    onSelectedIndexChange: React.PropTypes.func,
+    onZoomStart: React.PropTypes.func,
+    onZoomEnd: React.PropTypes.func,
+    onZoomIn: React.PropTypes.func,
+    onZoomOut: React.PropTypes.func,
+    onZoomReset: React.PropTypes.func,
+    onClose: React.PropTypes.func.isRequired,
+  }
 
-    static defaultProps = {
-        items: [],
-        options: {},
-    };
+  static defaultProps = {
+    onZoomStart: _.noop,
+    onZoomEnd: _.noop,
+    onZoomIn: _.noop,
+    onZoomOut: _.noop,
+    onZoomReset: _.noop,
+  }
 
-    state = {
-        isOpen: false,
-    };
+  constructor (props) {
+    super(props)
 
-    componentDidMount = () => {
-        const {isOpen} = this.state;
+    this.state = {}
+  }
 
-        if (isOpen) {
-            this.openPhotoSwipe(this.props);
+  componentDidMount () {
+    this.zvuiPinch = new PhotoSwipe(
+      this.element,
+      PhotoSwipeUIDefault,
+      this.props.items,
+      {
+        // See http://photoswipe.com/documentation/options.html
+        index: this.props.selectedIndex,
+        pinchToClose: false,
+        tapToClose: false,
+        loop: false,
+      }
+    )
+
+    this.zvuiPinch.listen('beforeChange', () => {
+      this.props.onSelectedIndexChange(this.zvuiPinch.getCurrentIndex())
+    })
+
+    this.zvuiPinch.listen('afterChange', () => {
+      this.initialZoomRatio = this.zvuiPinch.getZoomLevel()
+    })
+
+    this.zvuiPinch.listen('zoomGestureStarted', () => {
+      this.onZoomStart()
+    })
+
+    this.zvuiPinch.listen('zoomGestureEnded', () => {
+      this.onZoomEnd()
+    })
+
+    this.zvuiPinch.listen('doubleTap', () => {
+      this.onZoomStart()
+
+      // Wait until the zooming animation end then trigger `onZoomEnd` event
+      // Note that the double-tap delay is 300 ms, so we need to wait 400 ms
+      // See https://github.com/sylvesteraswin/react-pinch-zoom/blob/master/lib/photoswipe.js#L3287
+      setTimeout(() => {
+        if (!this._unmounting) {
+          this.onZoomEnd()
         }
-    };
+      }, 400)
+    })
 
-    componentWillReceiveProps = (nextProps) => {
-        const {isOpen} = this.state;
+    this.zvuiPinch.listen('destroy', () => {
+      if (!this._unmounting) {
+        this.props.onClose()
+      }
+    })
 
-        if (nextProps.isOpen) {
-            if (!isOpen) {
-                this.openPhotoSwipe(nextProps);
-            } else {
-                this.updateItems(nextProps.items);
-            }
-        } else if (isOpen) {
-            this.closePhotoSwipe();
-        }
-    };
+    this.zvuiPinch.init()
 
-    componentWillUnmount = () => {
-        this.closePhotoSwipe();
-    };
+    this.initialZoomRatio = this.zvuiPinch.getZoomLevel()
+  }
 
-    openPhotoSwipe = (props) => {
-        const {
-            items,
-            options,
-        } = props;
+  shouldComponentUpdate () {
+    // Do not re-render the component in any circumstances
+    return false
+  }
 
-        const _this = this;
+  componentWillUnmount () {
+    this._unmounting = true
 
-        const zvuiPinchElement = _this.refs[camelCase(BASE_CLASS)];
-        _this.zvuiPinch = new ZVUIPinch(zvuiPinchElement, ZVUIPinch_Default, items, options);
-
-        events.forEach(event => {
-            const callback = props[event];
-            if (callback || event === 'destroy') {
-                _this.zvuiPinch.listen(event, function() {
-                    if (callback) {
-                        const args = (arguments.length === 1
-                            ? [arguments[0]]
-                            : Array.apply(null, arguments));
-                        args.unshift(_this);
-                        callback(...args);
-                    }
-                    if (event === 'destroy') {
-                        _this.handleClose();
-                    }
-                });
-            }
-        });
-        _this.setState({
-            isOpen: true,
-        }, () => {
-            _this.zvuiPinch.init();
-        });
-    };
-
-    updateItems = (items = []) => {
-        this.zvuiPinch.items.length = 0;
-        items.forEach((item) => {
-            this.zvuiPinch.items.push(item);
-        });
-    };
-
-    closePhotoSwipe = () => {
-        if (!this.zvuiPinch) {
-            return;
-        }
-        this.zvuiPinch.close();
-    };
-
-    handleClose = () => {
-        const {onClose} = this.props;
-
-        this.setState({
-            isOpen: false,
-        }, () => {
-            if (onClose) {
-                onClose();
-            }
-        });
-    };
-
-    render() {
-        const {id} = this.props;
-        let {className} = this.props;
-
-        className = classnames([BASE_CLASS, className]).trim();
-
-        return (
-            <div id={id} className={className} tabIndex="-1" role="dialog" ref={camelCase(BASE_CLASS)}>
-                <div className={`${BASE_CLASS}__bg`}/>
-                <div className={`${BASE_CLASS}__scroll-wrap`}>
-                    <div className={`${BASE_CLASS}__container`}>
-                        <div className={`${BASE_CLASS}__item`}/>
-                        <div className={`${BASE_CLASS}__item`}/>
-                        <div className={`${BASE_CLASS}__item`}/>
-                    </div>
-                    <div className={`${BASE_CLASS}__ui ${BASE_CLASS}__ui--hidden`}>
-                        <div className={`${BASE_CLASS}__top-bar`}>
-                            <button className={`${BASE_CLASS}__button ${BASE_CLASS}__button--close`} title="Close (Esc)"></button>
-
-                            {/* <button className={`${BASE_CLASS}__button ${BASE_CLASS}__button--share`} title="Share"></button> */}
-
-                            {/* <button className={`${BASE_CLASS}__button ${BASE_CLASS}__button--fs`} title="Toggle fullscreen"></button> */}
-
-                            {/* <button className={`${BASE_CLASS}__button ${BASE_CLASS}__button--zoom`} title="Zoom in/out"></button> */}
-
-                            <div className={`${BASE_CLASS}__preloader`}/>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        );
+    if (this.zvuiPinch) {
+      this.zvuiPinch.close()
     }
-}
+  }
 
-export default PinchZoom;
+  onZoomStart = () => {
+    this.formerZoomRatio = this.zvuiPinch.getZoomLevel()
+
+    this.props.onZoomStart(this.formerZoomRatio)
+  }
+
+  onZoomEnd = () => {
+    const currentZoomRatio = this.zvuiPinch.getZoomLevel()
+
+    if (this.formerZoomRatio < currentZoomRatio) {
+      this.props.onZoomIn(currentZoomRatio)
+    } else {
+      this.props.onZoomOut(currentZoomRatio)
+    }
+
+    this.props.onZoomEnd(currentZoomRatio)
+
+    if (this.initialZoomRatio >= currentZoomRatio || Math.abs(this.initialZoomRatio - currentZoomRatio) < 0.01) {
+      this.props.onZoomReset(currentZoomRatio)
+    }
+  }
+
+  render () {
+    // Do not modify this line
+    const BASE_CLASS = 'zvui-pinch'
+
+    return (
+      <div className={`${BASE_CLASS}`} tabIndex='-1' role='dialog' ref={(e) => { this.element = e }}>
+        <div className={`${BASE_CLASS}__bg`} />
+        <div className={`${BASE_CLASS}__scroll-wrap`}>
+          <div className={`${BASE_CLASS}__container`}>
+            <div className={`${BASE_CLASS}__item`} />
+            <div className={`${BASE_CLASS}__item`} />
+            <div className={`${BASE_CLASS}__item`} />
+          </div>
+          <div className={`${BASE_CLASS}__ui ${BASE_CLASS}__ui--hidden`}>
+            <div className={`${BASE_CLASS}__top-bar`}>
+              <div className={`${BASE_CLASS}__counter`} />
+              <button className={`${BASE_CLASS}__button ${BASE_CLASS}__button--close`} />
+              <div className={`${BASE_CLASS}__preloader`} />
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+}

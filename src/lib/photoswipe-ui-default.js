@@ -51,18 +51,18 @@ const _defaultUIOptions = {
         return true;
     },
 
-    closeEl: true,
+    closeEl: false,
     captionEl: false,
     fullscreenEl: false,
     zoomEl: true,
     counterEl: false,
     arrowEl: false,
-    preloaderEl: true,
+    preloaderEl: false,
 
     tapToClose: true,
     tapToToggleControls: true,
 
-    clickToCloseNonZoomable: true,
+    clickToCloseNonZoomable: false,
 
     indexIndicatorSep: ' / ',
     fitControlsWidth: 1200,

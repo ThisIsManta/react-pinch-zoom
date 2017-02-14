@@ -1,0 +1,11 @@
+.zvui-pinch__bg {
+  background: none;
+}
+
+.zvui-pinch__img--placeholder--blank {
+  background: none;
+}
+
+.zvui-pinch__button--close {
+  display: none;
+}
