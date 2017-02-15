@@ -1,10 +1,11 @@
 import './lib/main.css'
 import './style.css'
 
-import _ from 'lodash'
 import PhotoSwipe from './lib/photoswipe.js'
 import PhotoSwipeUIDefault from './lib/photoswipe-ui-default.js'
 import React from 'react'
+
+const noop = function () {}
 
 export default class PinchZoom extends React.Component {
   static propTypes = {
@@ -24,11 +25,12 @@ export default class PinchZoom extends React.Component {
   }
 
   static defaultProps = {
-    onZoomStart: _.noop,
-    onZoomEnd: _.noop,
-    onZoomIn: _.noop,
-    onZoomOut: _.noop,
-    onZoomReset: _.noop,
+    onSelectedIndexChange: noop,
+    onZoomStart: noop,
+    onZoomEnd: noop,
+    onZoomIn: noop,
+    onZoomOut: noop,
+    onZoomReset: noop,
   }
 
   constructor (props) {
@@ -44,7 +46,7 @@ export default class PinchZoom extends React.Component {
       this.props.items,
       {
         // See http://photoswipe.com/documentation/options.html
-        index: this.props.selectedIndex,
+        index: this.props.selectedIndex >= 0 ? this.props.selectedIndex : 0,
         pinchToClose: false,
         tapToClose: false,
         loop: false,

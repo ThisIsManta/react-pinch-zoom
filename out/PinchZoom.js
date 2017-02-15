@@ -10,10 +10,6 @@ require('./lib/main.css');
 
 require('./style.css');
 
-var _lodash = require('lodash');
-
-var _lodash2 = _interopRequireDefault(_lodash);
-
 var _photoswipe = require('./lib/photoswipe.js');
 
 var _photoswipe2 = _interopRequireDefault(_photoswipe);
@@ -33,6 +29,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var noop = function noop() {};
 
 var PinchZoom = function (_React$Component) {
   _inherits(PinchZoom, _React$Component);
@@ -75,7 +73,7 @@ var PinchZoom = function (_React$Component) {
 
       this.zvuiPinch = new _photoswipe2.default(this.element, _photoswipeUiDefault2.default, this.props.items, {
         // See http://photoswipe.com/documentation/options.html
-        index: this.props.selectedIndex,
+        index: this.props.selectedIndex >= 0 ? this.props.selectedIndex : 0,
         pinchToClose: false,
         tapToClose: false,
         loop: false
@@ -194,10 +192,11 @@ PinchZoom.propTypes = {
   onClose: _react2.default.PropTypes.func.isRequired
 };
 PinchZoom.defaultProps = {
-  onZoomStart: _lodash2.default.noop,
-  onZoomEnd: _lodash2.default.noop,
-  onZoomIn: _lodash2.default.noop,
-  onZoomOut: _lodash2.default.noop,
-  onZoomReset: _lodash2.default.noop
+  onSelectedIndexChange: noop,
+  onZoomStart: noop,
+  onZoomEnd: noop,
+  onZoomIn: noop,
+  onZoomOut: noop,
+  onZoomReset: noop
 };
 exports.default = PinchZoom;
