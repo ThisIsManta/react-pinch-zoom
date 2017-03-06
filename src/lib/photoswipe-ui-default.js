@@ -54,7 +54,7 @@ const _defaultUIOptions = {
     closeEl: false,
     captionEl: false,
     fullscreenEl: false,
-    zoomEl: true,
+    zoomEl: false,
     counterEl: false,
     arrowEl: false,
     preloaderEl: true,
@@ -312,7 +312,7 @@ var _uiElements = [
     {
         name: 'button--zoom',
         option: 'zoomEl',
-        onTap: zvuiPinch.toggleDesktopZoom,
+        onTap() {},
     }, {
         name: 'button--close',
         option: 'closeEl',

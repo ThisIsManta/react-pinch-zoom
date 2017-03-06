@@ -59,7 +59,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
             closeEl: false,
             captionEl: false,
             fullscreenEl: false,
-            zoomEl: true,
+            zoomEl: false,
             counterEl: false,
             arrowEl: false,
             preloaderEl: true,
@@ -308,7 +308,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         var _uiElements = [{
             name: 'button--zoom',
             option: 'zoomEl',
-            onTap: zvuiPinch.toggleDesktopZoom
+            onTap: function onTap() {}
         }, {
             name: 'button--close',
             option: 'closeEl',
