@@ -57,7 +57,7 @@ const _defaultUIOptions = {
     zoomEl: true,
     counterEl: false,
     arrowEl: false,
-    preloaderEl: false,
+    preloaderEl: true,
 
     tapToClose: true,
     tapToToggleControls: true,

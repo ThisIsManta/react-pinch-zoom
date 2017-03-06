@@ -62,7 +62,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
             zoomEl: true,
             counterEl: false,
             arrowEl: false,
-            preloaderEl: false,
+            preloaderEl: true,
 
             tapToClose: true,
             tapToToggleControls: true,

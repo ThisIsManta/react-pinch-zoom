@@ -165,7 +165,11 @@ var PinchZoom = function (_React$Component) {
               { className: BASE_CLASS + '__top-bar' },
               _react2.default.createElement('div', { className: BASE_CLASS + '__counter' }),
               _react2.default.createElement('button', { className: BASE_CLASS + '__button ' + BASE_CLASS + '__button--close' }),
-              _react2.default.createElement('div', { className: BASE_CLASS + '__preloader' })
+              _react2.default.createElement(
+                'div',
+                { className: BASE_CLASS + '__preloader' },
+                this.props.loadingIndicator
+              )
             )
           )
         )
@@ -189,7 +193,8 @@ PinchZoom.propTypes = {
   onZoomIn: _react2.default.PropTypes.func,
   onZoomOut: _react2.default.PropTypes.func,
   onZoomReset: _react2.default.PropTypes.func,
-  onClose: _react2.default.PropTypes.func.isRequired
+  onClose: _react2.default.PropTypes.func.isRequired,
+  loadingIndicator: _react2.default.PropTypes.node
 };
 PinchZoom.defaultProps = {
   onSelectedIndexChange: noop,

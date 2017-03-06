@@ -22,6 +22,7 @@ export default class PinchZoom extends React.Component {
     onZoomOut: React.PropTypes.func,
     onZoomReset: React.PropTypes.func,
     onClose: React.PropTypes.func.isRequired,
+    loadingIndicator: React.PropTypes.node,
   }
 
   static defaultProps = {
@@ -145,7 +146,9 @@ export default class PinchZoom extends React.Component {
             <div className={`${BASE_CLASS}__top-bar`}>
               <div className={`${BASE_CLASS}__counter`} />
               <button className={`${BASE_CLASS}__button ${BASE_CLASS}__button--close`} />
-              <div className={`${BASE_CLASS}__preloader`} />
+              <div className={`${BASE_CLASS}__preloader`}>
+                {this.props.loadingIndicator}
+              </div>
             </div>
           </div>
         </div>
