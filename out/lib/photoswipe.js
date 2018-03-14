@@ -103,6 +103,24 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
                         return --k * k * k + 1;
                     }
                 }
+                /*
+                	elastic: {
+                		out: function ( k ) {
+                 			var s, a = 0.1, p = 0.4;
+                			if ( k === 0 ) return 0;
+                			if ( k === 1 ) return 1;
+                			if ( !a || a < 1 ) { a = 1; s = p / 4; }
+                			else s = p * Math.asin( 1 / a ) / ( 2 * Math.PI );
+                			return ( a * Math.pow( 2, - 10 * k) * Math.sin( ( k - s ) * ( 2 * Math.PI ) / p ) + 1 );
+                 		},
+                	},
+                	back: {
+                		out: function ( k ) {
+                			var s = 1.70158;
+                			return --k * k * ( ( s + 1 ) * k + s ) + 1;
+                		}
+                	}
+                */
             },
 
             /**
@@ -317,7 +335,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
             modal: true,
 
             // not fully implemented yet
-            scaleMode: 'fit' };
+            scaleMode: 'fit' // TODO
+        };
         helper.extend(_options, options);
 
         /**
@@ -1935,7 +1954,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
                         var MSPOINTER_TYPES = {
                             4: 'mouse', // event.MSPOINTER_TYPE_MOUSE
                             2: 'touch', // event.MSPOINTER_TYPE_TOUCH
-                            3: 'pen' };
+                            3: 'pen' // event.MSPOINTER_TYPE_PEN
+                        };
                         releasePoint.type = MSPOINTER_TYPES[e.pointerType];
 
                         if (!releasePoint.type) {

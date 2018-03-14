@@ -18,6 +18,10 @@ var _photoswipeUiDefault = require('./lib/photoswipe-ui-default.js');
 
 var _photoswipeUiDefault2 = _interopRequireDefault(_photoswipeUiDefault);
 
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
@@ -181,20 +185,20 @@ var PinchZoom = function (_React$Component) {
 }(_react2.default.Component);
 
 PinchZoom.propTypes = {
-  items: _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.shape({
-    src: _react2.default.PropTypes.string,
-    w: _react2.default.PropTypes.number,
-    h: _react2.default.PropTypes.number
+  items: _propTypes2.default.arrayOf(_propTypes2.default.shape({
+    src: _propTypes2.default.string,
+    w: _propTypes2.default.number,
+    h: _propTypes2.default.number
   })).isRequired,
-  selectedIndex: _react2.default.PropTypes.number.isRequired,
-  onSelectedIndexChange: _react2.default.PropTypes.func,
-  onZoomStart: _react2.default.PropTypes.func,
-  onZoomEnd: _react2.default.PropTypes.func,
-  onZoomIn: _react2.default.PropTypes.func,
-  onZoomOut: _react2.default.PropTypes.func,
-  onZoomReset: _react2.default.PropTypes.func,
-  onClose: _react2.default.PropTypes.func.isRequired,
-  loadingIndicator: _react2.default.PropTypes.node
+  selectedIndex: _propTypes2.default.number.isRequired,
+  onSelectedIndexChange: _propTypes2.default.func,
+  onZoomStart: _propTypes2.default.func,
+  onZoomEnd: _propTypes2.default.func,
+  onZoomIn: _propTypes2.default.func,
+  onZoomOut: _propTypes2.default.func,
+  onZoomReset: _propTypes2.default.func,
+  onClose: _propTypes2.default.func.isRequired,
+  loadingIndicator: _propTypes2.default.node
 };
 PinchZoom.defaultProps = {
   onSelectedIndexChange: noop,
