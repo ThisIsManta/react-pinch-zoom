@@ -3,26 +3,27 @@ import './style.css'
 
 import PhotoSwipe from './lib/photoswipe.js'
 import PhotoSwipeUIDefault from './lib/photoswipe-ui-default.js'
+import PropTypes from 'prop-types'
 import React from 'react'
 
 const noop = function () {}
 
 export default class PinchZoom extends React.Component {
   static propTypes = {
-    items: React.PropTypes.arrayOf(React.PropTypes.shape({
-      src: React.PropTypes.string,
-      w: React.PropTypes.number,
-      h: React.PropTypes.number,
+    items: PropTypes.arrayOf(PropTypes.shape({
+      src: PropTypes.string,
+      w: PropTypes.number,
+      h: PropTypes.number,
     })).isRequired,
-    selectedIndex: React.PropTypes.number.isRequired,
-    onSelectedIndexChange: React.PropTypes.func,
-    onZoomStart: React.PropTypes.func,
-    onZoomEnd: React.PropTypes.func,
-    onZoomIn: React.PropTypes.func,
-    onZoomOut: React.PropTypes.func,
-    onZoomReset: React.PropTypes.func,
-    onClose: React.PropTypes.func.isRequired,
-    loadingIndicator: React.PropTypes.node,
+    selectedIndex: PropTypes.number.isRequired,
+    onSelectedIndexChange: PropTypes.func,
+    onZoomStart: PropTypes.func,
+    onZoomEnd: PropTypes.func,
+    onZoomIn: PropTypes.func,
+    onZoomOut: PropTypes.func,
+    onZoomReset: PropTypes.func,
+    onClose: PropTypes.func.isRequired,
+    loadingIndicator: PropTypes.node,
   }
 
   static defaultProps = {
