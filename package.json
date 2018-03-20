@@ -1,14 +1,14 @@
 {
   "name": "@taskworld/react-pinch-zoom",
   "version": "0.1.6",
-  "description": "React component wraps PhotoSwipe",
+  "description": "PhotoSwipe in React",
   "main": "out/PinchZoom.js",
   "scripts": {
     "build": "babel src --out-dir out && cp src/*.css out && cp src/lib/*.css out/lib"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/sylvesteraswin/react-pinch-zoom.git"
+    "url": "git+https://github.com/ThisIsManta/react-pinch-zoom.git"
   },
   "keywords": [
     "react",
@@ -19,9 +19,9 @@
   "author": "Anantachai Saothong",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/thisismanta/react-pinch-zoom/issues"
+    "url": "https://github.com/ThisIsManta/react-pinch-zoom/issues"
   },
-  "homepage": "https://github.com/thisismanta/react-pinch-zoom",
+  "homepage": "https://github.com/ThisIsManta/react-pinch-zoom",
   "devDependencies": {
     "babel": "^6.5.2",
     "babel-cli": "^6.16.0",
