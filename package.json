@@ -4,7 +4,10 @@
   "description": "PhotoSwipe in React",
   "main": "out/PinchZoom.js",
   "scripts": {
-    "build": "babel src --out-dir out && cp src/*.css out && cp src/lib/*.css out/lib"
+    "build": "babel src --out-dir out && cp src/*.css out && cp src/lib/*.css out/lib",
+    "preversion": "npm install",
+    "version": "npm publish --access public",
+    "postversion": "git push --tags origin"
   },
   "repository": {
     "type": "git",
